@@ -43,6 +43,9 @@ REST経由で情報を受信できるようにIRISでRESTサーバを作成し�
 
 > Interoperabilityの仕組みやコンポーネントの役割については、コミュニティの記事：[【はじめてのInterSystems IRIS】Interoperability（相互運用性）を使ってみよう！](https://jp.community.intersystems.com/node/483021)をご参照ください。
 
+> RESTディスパッチクラスの作成方法については、コミュニティの記事：[【はじめてのInterSystems IRIS】セルフラーニングビデオ：アクセス編：（REST）手動で作成するディスパッチクラス](https://jp.community.intersystems.com/node/479551) をご参照ください。
+
+
 ## 作成方法
 
 ### 1. アダプタのないビジネスサービスを作成する
