@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2023.3 (Build 254U)" ts="2023-12-14 08:34:40">
+<Class name="FAQSample.Interop.FileOperation">
+<Super>Ens.BusinessOperation</Super>
+<TimeChanged>66812,21480.345155323</TimeChanged>
+<TimeCreated>66812,20782.089502348</TimeCreated>
+
+<Parameter name="ADAPTER">
+<Default>EnsLib.File.OutboundAdapter</Default>
+</Parameter>
+
+<Property name="Adapter">
+<Type>EnsLib.File.OutboundAdapter</Type>
+</Property>
+
+<Property name="OutputFileName">
+<Description>
+出力ファイル名を指定してください</Description>
+<Type>%String</Type>
+<InitialExpression>"test.txt"</InitialExpression>
+</Property>
+
+<Parameter name="SETTINGS">
+<Default>OutputFileName:サンプル用設定,ReplyCodeActions,RetryInterval,AlertRetryGracePeriod:Alerting,FailureTimeout,QueueCountAlert:Alerting,QueueWaitAlert:Alerting,SendSuperSession</Default>
+</Parameter>
+
+<Method name="OutputFile">
+<FormalSpec><![CDATA[pInput:FAQSample.Interop.Message,&pOutput:%RegisteredObject]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    set text=$ZDATETIME($H,16)_$$$NL
+    set text=text_"名前:"_pInput.Name_"||Email:"_pInput.Email_$$$NL
+    set status=..Adapter.PutString(..OutputFileName,text)
+    return $$$OK
+]]></Implementation>
+</Method>
+
+<XData name="MessageMap">
+<Description>
+Description</Description>
+<Data><![CDATA[
+<MapItems>
+<MapItem MessageType="FAQSample.Interop.Message">
+    <Method>OutputFile</Method>
+</MapItem>
+</MapItems>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="FAQSample.Interop.Message">
+<Super>Ens.Request</Super>
+<TimeChanged>66812,23506.026686988</TimeChanged>
+<TimeCreated>66812,19958.257454135</TimeCreated>
+
+<Property name="Name">
+<Type>%String</Type>
+</Property>
+
+<Property name="Email">
+<Type>%String</Type>
+</Property>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DefaultData>MessageDefaultData</DefaultData>
+<Data name="MessageDefaultData">
+<Subscript>"Message"</Subscript>
+<Value name="1">
+<Value>Name</Value>
+</Value>
+<Value name="2">
+<Value>Email</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="FAQSample.Interop.NonAdapter">
+<Super>Ens.BusinessService</Super>
+<TimeChanged>66812,22031.793226043</TimeChanged>
+<TimeCreated>66812,19424.84043465</TimeCreated>
+
+<Method name="OnProcessInput">
+<Description>
+第１引数はRESTディスパッチクラスで作成したメッセージが格納されるように変更</Description>
+<FormalSpec><![CDATA[pInput:FAQSample.Interop.Message,*pOutput:%RegisteredObject,&pHint:%String]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	set status=..SendRequestAsync("FAQSample.Interop.Process",pInput)
+    quit status
+]]></Implementation>
+</Method>
+</Class>
+
+
+<Class name="FAQSample.Interop.Process">
+<Description>
+</Description>
+<Super>Ens.BusinessProcessBPL</Super>
+<TimeChanged>66812,22001.39390775</TimeChanged>
+<TimeCreated>66812,21838.591065462</TimeCreated>
+
+<XData name="BPL">
+<Description>
+BPL Definition</Description>
+<XMLNamespace>http://www.intersystems.com/bpl</XMLNamespace>
+<Data><![CDATA[
+<process language='objectscript' request='FAQSample.Interop.Message' response='Ens.Response' height='2000' width='2000' >
+<sequence xend='553' yend='375' >
+<if name='Nameが空' condition='request.Name=""' xpos='599' ypos='239' xend='308' yend='335' >
+<true>
+<code name='Log出力' xpos='965' ypos='324' >
+<![CDATA[ $$$LOGINFO("Nameが空です！")]]]]><![CDATA[>
+</code>
+</true>
+<false>
+<call name='ファイル出力' target='FAQSample.Interop.FileOperation' async='1' xpos='369' ypos='269' >
+<request type='FAQSample.Interop.Message' >
+<assign property="callrequest" value="request" action="set" />
+</request>
+</call>
+</false>
+</if>
+</sequence>
+</process>
+]]></Data>
+</XData>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+</Storage>
+</Class>
+
+
+<Class name="FAQSample.Interop.Production">
+<Super>Ens.Production</Super>
+<TimeChanged>66822,30636.264607611</TimeChanged>
+<TimeCreated>66812,20092.679654067</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="FAQSample.Interop.Production" TestingEnabled="true" LogGeneralTraceEvents="false">
+  <Description></Description>
+  <ActorPoolSize>2</ActorPoolSize>
+  <Item Name="FAQSample.Interop.NonAdapter" Category="" ClassName="FAQSample.Interop.NonAdapter" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="FAQSample.Interop.FileOperation" Category="" ClassName="FAQSample.Interop.FileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="FilePath">/usr/irissys/mgr/user/</Setting>
+  </Item>
+  <Item Name="FAQSample.Interop.Process" Category="" ClassName="FAQSample.Interop.Process" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="FAQSample.REST">
+<Super>%CSP.REST</Super>
+<TimeChanged>66812,22228.422926906</TimeChanged>
+<TimeCreated>66812,19446.799062065</TimeCreated>
+
+<Parameter name="CHARSET">
+<Default>utf-8</Default>
+</Parameter>
+
+<Parameter name="CONTENTTYPE">
+<Default>application/json</Default>
+</Parameter>
+
+<Parameter name="CONVERTINPUTSTREAM">
+<Default>1</Default>
+</Parameter>
+
+<XData name="UrlMap">
+<XMLNamespace>http://www.intersystems.com/urlmap</XMLNamespace>
+<Data><![CDATA[
+<Routes>
+    <Route Url="/request" Method="POST" Call="PostRequest"/>
+    </Routes>
+]]></Data>
+</XData>
+
+<Method name="PostRequest">
+<Description><![CDATA[
+POST要求で/requestをリクエストされた場合以下メソッドが動きます。
+Bodyの情報は、%request.Contentで取得できます。
+以下形式のJSONデータをBodyに指定すると仮定しています。
+<pre>
+{
+    "Name":"テスト太郎",
+    "Email":"taro@mail.com"
+}
+</pre>]]></Description>
+<ClassMethod>1</ClassMethod>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+    #dim %request As %CSP.Request
+    #dim ex As %Exception.AbstractException
+    set status=$$$OK
+    try {
+        //Bodyに含まれているJSON文字を取得しJSONダイナミックオブジェクトに変換する
+        set body={}.%FromJSON(%request.Content)
+        //Interoperabilityの中で使用するメッセージを作成
+        set request=##class(FAQSample.Interop.Message).%New()
+        set request.Name=body.Name
+        set request.Email=body.Email
+        
+        //アダプタのないビジネスサービスを実行するため、インスタンスを生成
+        set status=##class(Ens.Director).CreateBusinessService("FAQSample.Interop.NonAdapter",.bs)
+        $$$ThrowOnError(status)
+        set status=bs.ProcessInput(request)
+    }
+    catch ex {
+        set status=ex.AsStatus()
+    }
+    return status
+]]></Implementation>
+</Method>
+</Class>
+</Export>
