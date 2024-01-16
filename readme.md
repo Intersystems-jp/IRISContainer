@@ -132,6 +132,8 @@ set status=bs.ProcessInput(request)
 (`raw`で`JSON`を指定します)
 ![](/assets/Postman-body.png)
 
+>※ 製品版IRISをご利用の場合、本番運用環境下ではIRISインストール時含まれるプライベートWebサーバ経由でのリクエストではなく、正式なWebサーバ（IISやApacheなど）経由でリクエストしてください。
+
 ### 5.トレースでメッセージを確認
 
 [ビジネスサービス：FAQSample.Interop.NonAdapter](/FAQSample/Interop/NonAdapter.cls)に入力されたメッセージを確認します。
