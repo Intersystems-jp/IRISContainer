@@ -61,7 +61,7 @@ Class FAQSample.Interop.NonAdapter Extends Ens.BusinessService
 /// 第１引数はRESTディスパッチクラスで作成したメッセージが格納されるように変更
 Method OnProcessInput(pInput As FAQSample.Interop.Message, Output pOutput As %RegisteredObject, ByRef pHint As %String) As %Status
 {
-	set status=..SendRequestAsync("FAQSample.Interop.Process",pInput)
+    set status=..SendRequestAsync("FAQSample.Interop.Process",pInput)
     quit status
 }
 
@@ -69,7 +69,7 @@ Method OnProcessInput(pInput As FAQSample.Interop.Message, Output pOutput As %Re
 ```
 OnProcessInput()の第1引数のタイプをオリジナルのタイプから入力予定のメッセージクラス名に変更します。（[FAQSample.Interop.Message](/FAQSample/Interop/Message.cls)）
 
-後は、第1引数のメッセージを次にコンポーネントである[ビジネスプロセス：FAQSample.Interop.Process](/FAQSample/Interop/Process.cls)に送信すればいいので、`..SendRequestAsync()`の第2引数にOnProcessInput()の第1引数の情報を渡しています。
+後は、第1引数のメッセージを次のコンポーネントである[ビジネスプロセス：FAQSample.Interop.Process](/FAQSample/Interop/Process.cls)に送信すればいいので、`..SendRequestAsync()`の第2引数にOnProcessInput()の第1引数の情報を渡しています。
 
 コンパイルを行った後、作成したビジネスサービスをプロダクションに追加します。
 
@@ -103,7 +103,7 @@ set request.Email=body.Email
 ```
 set status=##class(Ens.Director).CreateBusinessService("FAQSample.Interop.NonAdapter",.bs)
 ```
-戻り値を確認し1であればインスタンスの生成に成功しているので、ビジネスサービスのProcessInput()メソッドに作成したメッセージクラスを引数に指定し、実行します。
+戻り値を確認し$$$OKであればインスタンスの生成に成功しているので、ビジネスサービスのProcessInput()メソッドに作成したメッセージクラスを引数に指定し、実行します。
 ```
 set status=bs.ProcessInput(request)
 ```
