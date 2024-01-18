@@ -87,13 +87,13 @@ OnProcessInput()の第1引数のタイプをオリジナルのタイプから入
 }
 ```
 
-POST要求のボディに含まれる情報を取得し、サーバ側で処理しやすいようにJSONのダイナミックオブジェクトに変更します。
+POST要求のボディに含まれるJSON情報を取得し、サーバ側で処理しやすいようにダイナミックオブジェクトに変換します。
 
 なおHTTP要求はRESTディスパッチクラスの中では `%request` 変数で操作できます。ボディの情報は`Content`プロパティでアクセスできます。（この変数は[%CSP.Request](https://docs.intersystems.com/irisforhealthlatest/csp/documatic/%25CSP.Documatic.cls?LIBRARY=%25SYS&CLASSNAME=%25CSP.Request)のインスタンスです）
 ```
 set body={}.%FromJSON(%request.Content)
 ```
-ボディのJSONからプロダクションで必要なメッセージを作成します。
+ダイナミックオブジェクトからプロダクションで必要なメッセージを作成します。
 ```
 set request=##class(FAQSample.Interop.Message).%New()
 set request.Name=body.Name
@@ -160,10 +160,11 @@ VSCodeを利用している場合は、IRISに接続後、[FAQSample](/FAQSample
 
 ![](/assets/production-setting.png)
 
-インポート直後はプロダクションが開始していないため、「開始する」ボタンをクリックして開始します。（確認のダイアログが出力されるのですべてOKボタンをクリックします。）
-
-開始後、**オペレーション：FAQSample.Interop.FileOperation** の名称をクリックし、画面右の設定欄にある「ファイル・パス」をファイル出力可能なディレクトリに変更します。
+**オペレーション：FAQSample.Interop.FileOperation** の名称をクリックし、画面右の設定欄にある「ファイル・パス」をファイル出力可能なディレクトリに変更します。
 
 変更後、適用ボタンをクリックします。
 
 この設定により、REST経由で送信した情報が「ファイル・パス」で設定したディレクトリ以下に作成される **test.txt** に出力されます。
+
+変更が完了したら「開始する」ボタンをクリックしてプロダクションを開始します。
+（確認のダイアログが出力されるのですべてOKボタンをクリックします。）
