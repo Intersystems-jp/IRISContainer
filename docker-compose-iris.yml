@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  iris:
+    image: containers.intersystems.com/intersystems/iris:2023.1.1.380.0
+    build:
+      dockerfile: ./Dockerfile.iris
+    init: true
+    container_name: iris
+    restart: always
+    environment:
+      - TZ=JST-9
+    volumes:
+      - ./license:/ISC
+    command: --key /ISC/iris.key
+
+  webgw:
+    image: containers.intersystems.com/intersystems/webgateway:2023.1.1.380.0
+    container_name: web
+    init: true
+    restart: always
+    ports:
+      - 52773:80
+      - 8443:443
+    environment:
+    - ISC_CSP_CONF_FILE=/webgateway-shared/CSP.conf
+    - ISC_CSP_INI_FILE=/webgateway-shared/CSP.ini
+    volumes:
+    - ./web:/webgateway-shared
