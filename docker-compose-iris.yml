@@ -4,7 +4,7 @@ services:
   iris:
     image: containers.intersystems.com/intersystems/iris:latest_em
     build:
-      dockerfile: ./Dockerfile.iris
+      dockerfile: ./iris/
     init: true
     container_name: iris
     restart: always

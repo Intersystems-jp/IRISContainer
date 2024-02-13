@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   iris:
-    build: ./Dockerfile.community
+    build: ./community/
     container_name: iris
     restart: always
     ports:

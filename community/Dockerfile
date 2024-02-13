@@ -1,4 +1,5 @@
-FROM 'containers.intersystems.com/intersystems/irishealth-community:latest_em'
+#FROM 'containers.intersystems.com/intersystems/irishealth-community:latest-em'
+FROM 'containers.intersystems.com/intersystems/irishealth-community:latest-preview'
 WORKDIR /opt/app
 
 COPY ./Installer.cls ./
