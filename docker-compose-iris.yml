@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   iris:
-    image: containers.intersystems.com/intersystems/iris:latest_em
+    image: containers.intersystems.com/intersystems/iris:latest-em
     build:
       dockerfile: ./iris/
     init: true
@@ -15,7 +15,7 @@ services:
     command: --key /ISC/iris.key
 
   webgw:
-    image: containers.intersystems.com/intersystems/webgateway:latest_em
+    image: containers.intersystems.com/intersystems/webgateway:latest-em
     container_name: web
     init: true
     restart: always
