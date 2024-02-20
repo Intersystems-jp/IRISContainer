@@ -1,7 +1,13 @@
 version: '3.7'
 services:
   iris:
-    build: ./community/
+    build:
+      context: ./
+      dockerfile: ./iris/Dockerfile
+      args:
+        PRODNAME: "iris"
+        COMEDITION: "-community"
+        VER: "latest-preview"
     container_name: iris
     restart: always
     ports:

@@ -1,8 +1,11 @@
-FROM 'containers.intersystems.com/intersystems/iris:latest-em'
+ARG PRODNAME="iris"
+ARG COMEDITION=""
+ARG VER="latest-em"
+FROM containers.intersystems.com/intersystems/${PRODNAME}${COMEDITION}:${VER}
 WORKDIR /opt/app
 
 COPY ./Installer.cls ./
-#COPY ./cls/ ./src/
+COPY ./src/ ./src/
 
 RUN iris start $ISC_PACKAGE_INSTANCENAME quietly EmergencyId=sys,sys && \
     /bin/echo -e "sys\nsys\n" \

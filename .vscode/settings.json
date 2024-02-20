@@ -1,6 +1,6 @@
 {
     "objectscript.conn": {
-        "server": "local",
+        "server": "container",
         "ns": "ISCDEV",
         "active": true
     }

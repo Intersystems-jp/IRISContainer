@@ -2,12 +2,17 @@ version: '3.7'
 
 services:
   iris:
-    image: containers.intersystems.com/intersystems/iris:latest-em
     build:
       dockerfile: ./iris/
+      args:
+        PRODNAME: "irishealth"
+        COMEDITION: ""
+        VER: "latest-em"
     init: true
     container_name: iris
     restart: always
+    ports:
+      - 1972:1972
     environment:
       - TZ=JST-9
     volumes:
@@ -21,7 +26,6 @@ services:
     restart: always
     ports:
       - 52773:80
-      - 8443:443
     environment:
     - ISC_CSP_CONF_FILE=/webgateway-shared/CSP.conf
     - ISC_CSP_INI_FILE=/webgateway-shared/CSP.ini

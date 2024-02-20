@@ -20,7 +20,7 @@ XData MyInstall [ XMLNamespace = INSTALLER ]
    <Database Name="${DBNAME}-CODE" Dir="${APPPATH}${DBNAME}-CODE" Create="overwrite" Resource="${RESOURCE}"/>
    <Database Name="${DBNAME}-DATA" Dir="${APPPATH}${DBNAME}-DATA" Create="overwrite" Resource="${RESOURCE}"/>
   </Configuration>
-  <Import File="${SOURCESPATH}" Recurse="1"/>
+  <Import File="${SOURCESPATH}" Recurse="1" IgnoreErrors="1"/>
  </Namespace>
 </Manifest>
 }
