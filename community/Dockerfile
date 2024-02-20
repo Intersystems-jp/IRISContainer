@@ -3,7 +3,7 @@ FROM 'containers.intersystems.com/intersystems/irishealth-community:latest-previ
 WORKDIR /opt/app
 
 COPY ./Installer.cls ./
-COPY ./cls/ ./src/
+#COPY ./cls/ ./src/
 
 RUN iris start $ISC_PACKAGE_INSTANCENAME quietly EmergencyId=sys,sys && \
     /bin/echo -e "sys\nsys\n" \
