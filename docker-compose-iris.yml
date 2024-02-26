@@ -17,6 +17,7 @@ services:
       - TZ=JST-9
     volumes:
       - ./license:/ISC
+      - ../:/data
     command: --key /ISC/iris.key
 
   webgw:
