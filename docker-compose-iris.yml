@@ -3,9 +3,10 @@ version: '3.7'
 services:
   iris:
     build:
-      dockerfile: ./iris/
+      context: ./
+      dockerfile: ./iris/Dockerfile
       args:
-        PRODNAME: "irishealth"
+        PRODNAME: "iris"
         COMEDITION: ""
         VER: "latest-em"
     init: true
